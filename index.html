@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>In Hand Amount Calculator</title>
+	<style>
+		.inline-block {
+			display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<h3 class="inline-block">
+			Enter You CTC (LPA) :
+		</h3>
+		<input type="text" id="ctc">
+		<button id="calculate">Calculate</button>
+	</div>
+	<div>
+		<h3 class="inHandCTC"></h3>
+	</div>
+	<div>
+		<i>* Note : This in-hand amount is calculated assuming there are no savings. So the actual in-hand amount will be more after applying your savings (like home loan, investments under 80C etc...).</i>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+const twoLakhs = 2e5,
+	fiveLakhs = 5e5,
+	tenLakhs = 10e5,
+	fiftyLakhs = 50e5;
+
+window.onload = function () {
+	var btn = document.querySelector("#calculate");
+	btn.addEventListener("click", calculateInHand);
+}
+function calculateInHand() {
+	let annualCTC = document.querySelector("#ctc").value * 1e5;
+	let result = [],
+		taxes = [{
+			percentage: 0,
+			range: [0, twoLakhs]
+		}, {
+			percentage: 10,
+			range: [twoLakhs, fiveLakhs]
+		}, {
+			percentage: 20,
+			range: [fiveLakhs, tenLakhs]
+		}, {
+			percentage: 30,
+			range: [tenLakhs, fiftyLakhs]
+		}];
+
+	taxes.forEach((taxSlab) => {
+		let amount = taxSlab.range[1] - taxSlab.range[0],
+			taxToBeDeducted = 0,
+			bracketWise;
+
+		if (!(annualCTC < taxSlab.range[0] && annualCTC < taxSlab.range[1])) {
+			if (annualCTC >= taxSlab.range[0] && annualCTC < taxSlab.range[1]) {
+				amount = annualCTC - taxSlab.range[0];
+			}
+			taxToBeDeducted = (amount * (taxSlab.percentage / 100));
+			result.push(amount - taxToBeDeducted);
+		}
+	});
+
+	let inHandMoney = result.reduce((n1, n2) => n1 + n2);
+	document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = " + Math.round(inHandMoney / 12) + " INR";
+}
+
+calculateInHand();
+</script>
