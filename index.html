@@ -10,10 +10,18 @@
 </head>
 <body>
 	<div>
-		<h3 class="inline-block">
-			Enter You CTC (LPA) :
-		</h3>
-		<input type="text" id="ctc">
+		<div>
+			<h3 class="inline-block"> Enter You CTC (LPA) : </h3>
+			<input type="text" id="ctc">
+		</div>
+		<div>
+			<h3 class="inline-block">Gender</h3>
+			<div class="inline-block">
+				<input type="radio" name="gender" value="male" checked="true"> Male
+				<input type="radio" name="gender" value="female"> Female
+			</div>
+		</div>
+
 		<button id="calculate">Calculate</button>
 	</div>
 	<div>
@@ -25,7 +33,9 @@
 </body>
 </html>
 <script type="text/javascript">
-const twoLakhs = 2e5,
+"use strict";
+const onePointFiveLakh = 1.5e5,
+	twoLakhs = 2e5,
 	fiveLakhs = 5e5,
 	tenLakhs = 10e5,
 	fiftyLakhs = 50e5;
@@ -33,13 +43,15 @@ const twoLakhs = 2e5,
 window.onload = function () {
 	var btn = document.querySelector("#calculate");
 	btn.addEventListener("click", calculateInHand);
-}
+};
+
 function calculateInHand() {
 	let annualCTC = document.querySelector("#ctc").value * 1e5;
 	let result = [],
+		gender = document.querySelector("input[type=radio]:checked").value,
 		taxes = [{
 			percentage: 0,
-			range: [0, twoLakhs]
+			range: [0, (gender=="male" ? onePointFiveLakh : twoLakhs)]
 		}, {
 			percentage: 10,
 			range: [twoLakhs, fiveLakhs]
@@ -51,10 +63,10 @@ function calculateInHand() {
 			range: [tenLakhs, fiftyLakhs]
 		}];
 
+	console.log("gender =", gender);
 	taxes.forEach((taxSlab) => {
 		let amount = taxSlab.range[1] - taxSlab.range[0],
-			taxToBeDeducted = 0,
-			bracketWise;
+			taxToBeDeducted = 0;
 
 		if (!(annualCTC < taxSlab.range[0] && annualCTC < taxSlab.range[1])) {
 			if (annualCTC >= taxSlab.range[0] && annualCTC < taxSlab.range[1]) {
