@@ -2,43 +2,72 @@
 <html>
 <head>
 	<title>In Hand Amount Calculator</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
 	<style>
 		.inline-block {
 			display: inline-block;
+		}
+		.centerAlign {
+			width: 900px;
+		    margin: auto;
+		    margin-top: 20px;
+		    background-color: #F7F7F9;
+		    padding: 25px;
+		    border: 1px solid #ddd;
+		    border-radius: 5px;
+		}
+		.radio-container-padding {
+			padding: 20px 10px;
+		}
+		.border-bottom {
+			border-bottom: 1px solid #ddd;
 		}
 		.green {
 			color: green;
 		}
 		#calculate {
-			width: 200px;
-    		height: 50px;
+			float: right;
+			margin-top: 10px;
 		}
 		#ctc {
 			height: 25px;
+			margin-top: 20px;
 		}
 	</style>
 </head>
 <body>
-	<div>
-		<div>
-			<h3 class="inline-block"> Enter You CTC (LPA) : </h3>
-			<input type="text" id="ctc">
-		</div>
-		<div>
-			<h3 class="inline-block">Gender</h3>
-			<div class="inline-block">
-				<input type="radio" name="gender" value="male" checked="true"> Male
-				<input type="radio" name="gender" value="female"> Female
+	<div class="centerAlign">
+		<div class="row show-grid">
+			<div class="col-md-6">
+				<h3> Enter You CTC (LPA) : </h3>
+			</div>
+			<div class="col-md-6">
+				<input type="text" id="ctc" class="form-control">
 			</div>
 		</div>
+		<div class="row show-grid border-bottom">
+			<div class="col-md-6">
+				<h3 class="inline-block">Gender:</h3>
+			</div>
+			<div class="col-md-6 radio-container-padding">
+				<label class="radio-inline">
+				  <input type="radio" name="gender" value="male" checked="true"> Male
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="gender" value="female"> Female
+				</label>
+			</div>
+		</div>
+		<div class="row show-grid">
+			<button id="calculate" class="btn btn-primary">Calculate</button>
+		</div>
 
-		<button id="calculate">Calculate</button>
-	</div>
-	<div>
-		<h3 class="inHandCTC"></h3>
-	</div>
-	<div>
-		<i>* Note : This in-hand amount is calculated assuming there are no savings. So the actual in-hand amount will be more after applying your savings (like home loan, investments under 80C etc...).</i>
+		<div class="row show-grid">
+			<h3 class="inHandCTC"></h3>
+			<i>* Note : This in-hand amount is calculated assuming there are no savings. So the actual in-hand amount will be more after applying your savings (like home loan, investments under 80C etc...).</i>
+		</div>
+		<!-- <div>
+		</div> -->
 	</div>
 </body>
 </html>
