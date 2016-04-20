@@ -26,30 +26,30 @@
 			color: green;
 		}
 		#calculate {
-			float: right;
+			/*float: right;*/
 			margin-top: 10px;
 		}
 		#ctc {
-			height: 25px;
-			margin-top: 20px;
+			height: 35px;
+			margin-top: 15px;
 		}
 	</style>
 </head>
 <body>
 	<div class="centerAlign">
 		<div class="row show-grid">
-			<div class="col-md-6">
+			<div class="col-md-6 col-lg-6">
 				<h3> Enter You CTC (LPA) : </h3>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6 col-lg-6">
 				<input type="text" id="ctc" class="form-control">
 			</div>
 		</div>
 		<div class="row show-grid border-bottom">
-			<div class="col-md-6">
+			<div class="col-md-6 col-lg-6">
 				<h3 class="inline-block">Gender:</h3>
 			</div>
-			<div class="col-md-6 radio-container-padding">
+			<div class="col-md-6 col-lg-6 radio-container-padding">
 				<label class="radio-inline">
 				  <input type="radio" name="gender" value="male" checked="true"> Male
 				</label>
@@ -66,58 +66,63 @@
 			<h3 class="inHandCTC"></h3>
 			<i>* Note : This in-hand amount is calculated assuming there are no savings. So the actual in-hand amount will be more after applying your savings (like home loan, investments under 80C etc...).</i>
 		</div>
-		<!-- <div>
-		</div> -->
 	</div>
 </body>
 </html>
 <script type="text/javascript">
-"use strict";
-const onePointFiveLakh = 1.5e5,
-	twoLakhs = 2e5,
-	fiveLakhs = 5e5,
-	tenLakhs = 10e5,
-	fiftyLakhs = 50e5;
+	(function () {
 
-window.onload = function () {
-	var btn = document.querySelector("#calculate");
-	btn.addEventListener("click", calculateInHand);
-};
+	"use strict";
 
-function calculateInHand() {
-	let annualCTC = document.querySelector("#ctc").value * 1e5;
-	let result = [],
-		gender = document.querySelector("input[type=radio]:checked").value,
-		taxes = [{
-			percentage: 0,
-			range: [0, (gender=="male" ? onePointFiveLakh : twoLakhs)]
-		}, {
-			percentage: 10,
-			range: [twoLakhs, fiveLakhs]
-		}, {
-			percentage: 20,
-			range: [fiveLakhs, tenLakhs]
-		}, {
-			percentage: 30,
-			range: [tenLakhs, fiftyLakhs]
-		}];
+	const onePointFiveLakh = 1.5e5,
+		twoLakhs = 2e5,
+		fiveLakhs = 5e5,
+		tenLakhs = 10e5,
+		fiftyLakhs = 50e5;
 
-	taxes.forEach((taxSlab) => {
-		let amount = taxSlab.range[1] - taxSlab.range[0],
-			taxToBeDeducted = 0;
+	window.onload = function () {
+		var btn = document.querySelector("#calculate");
+		btn.addEventListener("click", calculateInHand);
+	};
 
-		if (!(annualCTC < taxSlab.range[0] && annualCTC < taxSlab.range[1])) {
-			if (annualCTC >= taxSlab.range[0] && annualCTC < taxSlab.range[1]) {
-				amount = annualCTC - taxSlab.range[0];
+	function calculateInHand() {
+		let annualCTC = document.querySelector("#ctc").value * 1e5;
+		let result = [],
+			gender = document.querySelector("input[type=radio]:checked").value,
+			taxes = [{
+				percentage: 0,
+				range: [0, (gender=="female" ? twoLakhs : onePointFiveLakh)]
+			}, {
+				percentage: 10,
+				range: [twoLakhs, fiveLakhs]
+			}, {
+				percentage: 20,
+				range: [fiveLakhs, tenLakhs]
+			}, {
+				percentage: 30,
+				range: [tenLakhs, fiftyLakhs]
+			}];
+
+		taxes.forEach((taxSlab) => {
+			let amount = 0,
+				taxToBeDeducted = 0;
+
+			amount = taxSlab.range[1] - taxSlab.range[0];
+
+			if (!(annualCTC < taxSlab.range[0] && annualCTC < taxSlab.range[1])) {
+				if (annualCTC >= taxSlab.range[0] && annualCTC < taxSlab.range[1]) {
+					amount = annualCTC - taxSlab.range[0];
+				}
+				taxToBeDeducted = (amount * (taxSlab.percentage / 100));
+				result.push(amount - taxToBeDeducted);
 			}
-			taxToBeDeducted = (amount * (taxSlab.percentage / 100));
-			result.push(amount - taxToBeDeducted);
-		}
-	});
+		});
 
-	let inHandMoney = result.reduce((n1, n2) => n1 + n2);
-	document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = <span class='green'> " + Math.round(inHandMoney / 12) + " </span> INR";
-}
+		let inHandMoney = result.reduce((n1, n2) => n1 + n2);
+		document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = <span class='green'> " + Math.round(inHandMoney / 12) + " </span> INR";
+	}
 
-calculateInHand();
+	calculateInHand();
+
+	})();
 </script>
