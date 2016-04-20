@@ -7,6 +7,13 @@
 		.inline-block {
 			display: inline-block;
 		}
+		.show-grid {
+			padding-bottom: 15px;
+		}
+		.boldText {
+			font-weight: bold;
+			/*font-size: 20px;*/
+		}
 		.centerAlign {
 			width: 900px;
 		    margin: auto;
@@ -19,7 +26,7 @@
 		.radio-container-padding {
 			padding: 20px 10px;
 		}
-		.border-bottom {
+		.borderBottom {
 			border-bottom: 1px solid #ddd;
 		}
 		.green {
@@ -30,26 +37,27 @@
 			margin-top: 10px;
 		}
 		#ctc {
-			height: 35px;
-			margin-top: 15px;
+			width: 200px;
+			height: 25px;
 		}
 	</style>
 </head>
 <body>
-	<div class="centerAlign">
+	<div class="centerAlign container-fluid">
 		<div class="row show-grid">
-			<div class="col-md-6 col-lg-6">
-				<h3> Enter You CTC (LPA) : </h3>
+			<div class="col-sm-12 col-md-3 col-lg-2">
+				<span class="boldText"> Enter CTC </span>
 			</div>
-			<div class="col-md-6 col-lg-6">
-				<input type="text" id="ctc" class="form-control">
+			<div class="col-sm-12 col-md-3 col-lg-3">
+				<input placeholder="Enter the amount in LPA" type="text" id="ctc" class="form-control inline-block">
 			</div>
 		</div>
-		<div class="row show-grid border-bottom">
-			<div class="col-md-6 col-lg-6">
-				<h3 class="inline-block">Gender:</h3>
+
+		<div class="row show-grid">
+			<div class="col-sm-12 col-md-3 col-lg-2">
+				<span class="boldText"> Gender </span>
 			</div>
-			<div class="col-md-6 col-lg-6 radio-container-padding">
+			<div class="col-sm-12 col-md-3 col-lg-3">
 				<label class="radio-inline">
 				  <input type="radio" name="gender" value="male" checked="true"> Male
 				</label>
@@ -58,12 +66,21 @@
 				</label>
 			</div>
 		</div>
+		<div class="row show-grid borderBottom">
+			<div class="col-sm-12 col-md-3 col-lg-2">
+				<span class="boldText"> In Hand Amount </span>
+			</div>
+			<div class="col-sm-12 col-md-3 col-lg-2">
+				<span class="inHandCTC"></span>
+			</div>
+		</div>
 		<div class="row show-grid">
-			<button id="calculate" class="btn btn-primary">Calculate</button>
+			<div class="col-sm-12 col-md-3 col-lg-3">
+				<button id="calculate" class="btn btn-primary">Calculate</button>
+			</div>
 		</div>
 
 		<div class="row show-grid">
-			<h3 class="inHandCTC"></h3>
 			<i>* Note : This in-hand amount is calculated assuming there are no savings. So the actual in-hand amount will be more after applying your savings (like home loan, investments under 80C etc...).</i>
 		</div>
 	</div>
@@ -119,7 +136,7 @@
 		});
 
 		let inHandMoney = result.reduce((n1, n2) => n1 + n2);
-		document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = <span class='green'> " + Math.round(inHandMoney / 12) + " </span> INR";
+		document.querySelector(".inHandCTC").innerHTML = Math.round(inHandMoney / 12) + " INR";
 	}
 
 	calculateInHand();
