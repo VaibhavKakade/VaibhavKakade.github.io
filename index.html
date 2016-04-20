@@ -6,6 +6,16 @@
 		.inline-block {
 			display: inline-block;
 		}
+		.green {
+			color: green;
+		}
+		#calculate {
+			width: 200px;
+    		height: 50px;
+		}
+		#ctc {
+			height: 25px;
+		}
 	</style>
 </head>
 <body>
@@ -63,7 +73,6 @@ function calculateInHand() {
 			range: [tenLakhs, fiftyLakhs]
 		}];
 
-	console.log("gender =", gender);
 	taxes.forEach((taxSlab) => {
 		let amount = taxSlab.range[1] - taxSlab.range[0],
 			taxToBeDeducted = 0;
@@ -78,7 +87,7 @@ function calculateInHand() {
 	});
 
 	let inHandMoney = result.reduce((n1, n2) => n1 + n2);
-	document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = " + Math.round(inHandMoney / 12) + " INR";
+	document.querySelector(".inHandCTC").innerHTML = "In Hand Amount = <span class='green'> " + Math.round(inHandMoney / 12) + " </span> INR";
 }
 
 calculateInHand();
